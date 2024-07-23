@@ -32,3 +32,9 @@ jobs:
         python download_bins.py
     - name: Try building
       run: python main.py
+    - name: Upload release
+      env: 
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "Uploading release"
+        gh release create --latest $(python .\release_name.py) big_file_merged-patched.apk
