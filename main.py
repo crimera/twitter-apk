@@ -125,7 +125,12 @@ def merge_apk(path: str):
 
 def patch_apk(cli: str, integrations: str, patches: str, apk: str, includes: list[str]):
     # java -jar .\revanced-cli-4.5.0-all.jar patch -b .\piko\build\libs\*.jar -m .\revanced-integrations\app\build\outputs\apk\release\*.apk -i "Enable app downgrading" -i "Hide FAB" -i "Disable chirp font" -i "Add ability to copy media link" -i "Hide Banner" -i "Hide promote button" "$apk.apk"
-    command = ["java", "-jar", cli, "patch", "-b", patches, "-m", integrations]
+    command = [
+        "java", "-jar", cli, "patch", "-b", patches, "-m", integrations, 
+        # use j-hc's keystore so we wouldn't need to reinstall
+        "--keystore", "ks.keystore", "--keystore-entry-password", "123456789", "--keystore-password", "123456789",
+        "--signer", "jhc", "--keystore-entry-alias", "jhc"
+    ]
 
     for i in includes:
         command.append("-i")
