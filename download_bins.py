@@ -36,4 +36,4 @@ if __name__ == "__main__":
     download_release_asset("REAndroid/APKEditor", "APKEditor", "bins", "apkeditor.jar")
     download_release_asset("ReVanced/revanced-cli", "^revanced-cli.*jar$", "bins", "cli.jar")
     download_release_asset("crimera/piko", "^piko.*jar$", "bins", "patches.jar")
-    download_release_asset("crimera/revanced-integrations", "^rev.*apk$", "bins", "integrations.jar")
+    download_release_asset("crimera/revanced-integrations", "^rev.*apk$", "bins", "integrations.apk")
