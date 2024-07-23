@@ -33,7 +33,11 @@ def download_release_asset(repo: str, regex: str, out_dir: str, filename=None):
     download(link, f"{out_dir.lstrip("/")}/{filename}")
 
 if __name__ == "__main__":
+    print("Downloading apkeditor")
     download_release_asset("REAndroid/APKEditor", "APKEditor", "bins", "apkeditor.jar")
+    print("Downloading cli")
     download_release_asset("ReVanced/revanced-cli", "^revanced-cli.*jar$", "bins", "cli.jar")
+    print("Downloading patches")
     download_release_asset("crimera/piko", "^piko.*jar$", "bins", "patches.jar")
+    print("Downloading integrations")
     download_release_asset("crimera/revanced-integrations", "^rev.*apk$", "bins", "integrations.apk")
