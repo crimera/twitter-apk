@@ -37,4 +37,4 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         echo "Uploading release"
-        gh release create --latest $(python .\release_name.py) big_file_merged-patched.apk
+        gh release create --latest $(python release_name.py) big_file_merged-patched.apk
