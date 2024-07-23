@@ -121,7 +121,7 @@ def download_apk(url: str) -> None:
                 f.write(chunk)
         
 def merge_apk(path: str):
-    subprocess.run(["java", "-jar", "./bins/apkeditor-1.3.8.jar", "m", "-i", path]).check_returncode()
+    subprocess.run(["java", "-jar", "./bins/apkeditor.jar", "m", "-i", path]).check_returncode()
 
 def patch_apk(cli: str, integrations: str, patches: str, apk: str, includes: list[str]):
     # java -jar .\revanced-cli-4.5.0-all.jar patch -b .\piko\build\libs\*.jar -m .\revanced-integrations\app\build\outputs\apk\release\*.apk -i "Enable app downgrading" -i "Hide FAB" -i "Disable chirp font" -i "Add ability to copy media link" -i "Hide Banner" -i "Hide promote button" "$apk.apk"
@@ -217,10 +217,10 @@ if __name__ == "__main__":
 
     # patch
     patch_apk(
-        "bins/revanced-cli-4.5.0-all.jar",
-        "bins/revanced-integrations-1.21.1-dev.1.apk",
-        "bins/piko-twitter-patches-1.32.0.jar",
-        "test/big_file_merged.apk",
+        "bins/cli.jar",
+        "bins/integrations.apk",
+        "bins/patches.jar",
+        "big_file_merged.apk",
         [
             "Enable app downgrading",
             "Hide FAB",
