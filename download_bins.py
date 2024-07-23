@@ -36,7 +36,7 @@ if __name__ == "__main__":
     print("Downloading apkeditor")
     download_release_asset("REAndroid/APKEditor", "APKEditor", "bins", "apkeditor.jar")
     print("Downloading cli")
-    download_release_asset("ReVanced/revanced-cli", "^revanced-cli.*jar$", "bins", "cli.jar")
+    download_release_asset("inotia00/revanced-cli", "^revanced-cli.*jar$", "bins", "cli.jar")
     print("Downloading patches")
     download_release_asset("crimera/piko", "^piko.*jar$", "bins", "patches.jar")
     print("Downloading integrations")
