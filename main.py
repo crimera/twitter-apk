@@ -199,6 +199,8 @@ if __name__ == "__main__":
     # Begin stuff
     if last_build_version != latest_version.version:
         print(f"New version found: {latest_version.version}")
+    else:
+        panic("No new version found")
 
     # get bundle and universal variant
     variants: list[Variant] = get_variants(latest_version.link)
