@@ -11,6 +11,10 @@ def panic(message: str):
 
 
 def download(link, out):
+    if os.path.exists(out):
+        print(f"{out} already exists skipping download")
+        return
+
     # https://www.slingacademy.com/article/python-requests-module-how-to-download-files-from-urls/#Streaming_Large_Files
     with requests.get(link, stream=True) as r:
         r.raise_for_status()
@@ -36,12 +40,6 @@ def patch_apk(
     excludes: list[str] | None = None,
     out: str | None = None,
 ):
-    if out is not None:
-        shutil.copyfile(apk, out)
-        if not os.path.exists(out):
-            raise Exception(f"Failed to copy file to {out}")
-        apk = out
-
     command = [
         "java",
         "-jar",
@@ -80,8 +78,9 @@ def patch_apk(
 
     # remove -patched from the apk to match out
     if out is not None:
-        cli_output = f"{str(out).removesuffix(".apk")}-patched.apk"
-        os.unlink(out)
+        cli_output = f"{str(apk).removesuffix(".apk")}-patched.apk"
+        if (os.path.exists(out)):
+            os.unlink(out)
         shutil.move(cli_output, out)
 
 
