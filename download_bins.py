@@ -3,12 +3,12 @@ import re
 from utils import download
 
 
-def get_last_release_assets(repo_url: str) -> list | None:
+def get_last_release_assets(repo_url: str) -> list:
     url = f"https://api.github.com/repos/{repo_url}/releases/latest"
 
     response = requests.get(url)
     if response.status_code != 200:
-        return None
+        raise Exception("Failed to fetch github")
 
     return response.json()["assets"]
 

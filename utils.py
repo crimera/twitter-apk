@@ -1,8 +1,10 @@
 import requests
 
+
 def panic(message: str):
     print(message)
     exit(1)
+
 
 def download(link, out):
     # https://www.slingacademy.com/article/python-requests-module-how-to-download-files-from-urls/#Streaming_Large_Files

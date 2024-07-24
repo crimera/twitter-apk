@@ -33,6 +33,4 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         echo "Uploading release"
-        VERSION="$(python release_name.py)"
-        mv big_file_merged-patched.apk "piko-v$VERSION.apk"
-        gh release create --latest "$VERSION" piko*.apk
+        gh release create --latest $(python .\release_name.py) *piko*.apk
