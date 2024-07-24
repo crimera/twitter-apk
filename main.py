@@ -1,7 +1,7 @@
 from apkmirror import Version, Variant
 from build_variants import build_apks
 from download_bins import download_apkeditor, download_revanced_bins
-from utils import panic, merge_apk
+from utils import panic, merge_apk, publish_release
 import apkmirror
 import os
 
@@ -64,4 +64,13 @@ if __name__ == "__main__":
     download_revanced_bins()
 
     build_apks(latest_version)
-    # TODO: move the release job here
+
+    publish_release(
+        latest_version.version,
+        [
+            "x-piko-v{latest_version.version}.apk"
+            "x-piko-material-you-v{latest_version.version}.apk"
+            "twitter-piko-v{latest_version.version}.apk"
+            "twitter-piko-material-yout-v{latest_version.version}.apk"
+        ],
+    )

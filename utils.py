@@ -1,3 +1,4 @@
+from math import exp
 import os
 import shutil
 import requests
@@ -82,3 +83,19 @@ def patch_apk(
         cli_output = f"{str(out).removesuffix(".apk")}-patched.apk"
         os.unlink(out)
         shutil.move(cli_output, out)
+
+
+def publish_release(tag: str, files: list[str]):
+    key = os.environ.get("GH_TOKEN")
+    if key is None:
+        raise Exception("GH_TOKEN is not set")
+
+    command = ["gh", "release", "create", "--latest", tag]
+
+    if len(files) == 0:
+        raise Exception("Files should have atleast one item")
+
+    for file in files:
+        command.append(file)
+
+    subprocess.run(command).check_returncode()

@@ -27,10 +27,6 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Try building
-      run: python main.py
-    - name: Upload release
       env: 
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: |
-        echo "Uploading release"
-        gh release create --latest $(python .\release_name.py) *piko*.apk
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: python main.py
