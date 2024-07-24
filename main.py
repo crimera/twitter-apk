@@ -1,6 +1,7 @@
 from apkmirror import Version, Variant
+from build_variants import build_apks
 from download_bins import download_apkeditor, download_revanced_bins
-from utils import panic, patch_apk, merge_apk
+from utils import panic, merge_apk
 import apkmirror
 import os
 
@@ -62,79 +63,5 @@ if __name__ == "__main__":
 
     download_revanced_bins()
 
-    # patch
-    apk = "big_file_merged.apk"
-
-    patch_apk(
-        "bins/cli.jar",
-        "bins/integrations.apk",
-        "bins/patches.jar",
-        apk,
-        includes=[
-            "Enable app downgrading",
-            "Hide FAB",
-            "Disable chirp font",
-            "Add ability to copy media link",
-            "Hide Banner",
-            "Hide promote button",
-            "Hide Community Notes",
-            "Delete from database",
-        ],
-        out=f"x-piko-material-you-v{latest_version.version}.apk",
-    )
-
-    patch_apk(
-        "bins/cli.jar",
-        "bins/integrations.apk",
-        "bins/patches.jar",
-        apk,
-        includes=[
-            "Enable app downgrading",
-            "Hide FAB",
-            "Disable chirp font",
-            "Add ability to copy media link",
-            "Hide Banner",
-            "Hide promote button",
-            "Hide Community Notes",
-            "Delete from database",
-        ],
-        excludes=["Dynamic color"],
-        out=f"x-piko-v{latest_version.version}.apk",
-    )
-
-    patch_apk(
-        "bins/cli.jar",
-        "bins/integrations.apk",
-        "bins/patches.jar",
-        apk,
-        includes=[
-            "Bring back twitter" "Enable app downgrading",
-            "Hide FAB",
-            "Disable chirp font",
-            "Add ability to copy media link",
-            "Hide Banner",
-            "Hide promote button",
-            "Hide Community Notes",
-            "Delete from database",
-        ],
-        out=f"twitter-piko-material-you-v{latest_version.version}.apk",
-    )
-
-    patch_apk(
-        "bins/cli.jar",
-        "bins/integrations.apk",
-        "bins/patches.jar",
-        apk,
-        includes=[
-            "Bring back twitter" "Enable app downgrading",
-            "Hide FAB",
-            "Disable chirp font",
-            "Add ability to copy media link",
-            "Hide Banner",
-            "Hide promote button",
-            "Hide Community Notes",
-            "Delete from database",
-        ],
-        excludes=["Dynamic color"],
-        out=f"twitter-piko-v{latest_version.version}.apk",
-    )
+    build_apks(latest_version)
+    # TODO: move the release job here

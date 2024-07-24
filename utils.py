@@ -18,12 +18,14 @@ def download(link, out):
                 f.write(chunk)
 
 
+# TODO: make builds silent. only print build logs on error
 def merge_apk(path: str):
     subprocess.run(
         ["java", "-jar", "./bins/apkeditor.jar", "m", "-i", path]
     ).check_returncode()
 
 
+# TODO: make builds silent. only print build logs on error
 def patch_apk(
     cli: str,
     integrations: str,
