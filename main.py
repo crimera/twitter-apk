@@ -217,10 +217,14 @@ if __name__ == "__main__":
     download_apk(download_link)
     if not os.path.exists("big_file.apkm"):
         panic("Failed to download apk")
-    
+
+    download_apkeditor()
+
     # merge apkm
     # merge command java -jar ./bins/APKEditor-1.3.8.jar
     merge_apk("big_file.apkm")
+
+    download_revanced_bins()
 
     # patch
     patch_apk(
