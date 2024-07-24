@@ -1,74 +1,8 @@
-import shutil
 from apkmirror import Version, Variant
 from download_bins import download_apkeditor, download_revanced_bins
-import subprocess
-from utils import panic
+from utils import panic, patch_apk, merge_apk
 import apkmirror
 import os
-
-
-def merge_apk(path: str):
-    subprocess.run(
-        ["java", "-jar", "./bins/apkeditor.jar", "m", "-i", path]
-    ).check_returncode()
-
-
-def patch_apk(
-    cli: str,
-    integrations: str,
-    patches: str,
-    apk: str,
-    includes: list[str] | None = None,
-    excludes: list[str] | None = None,
-    out: str | None = None,
-):
-    if out is not None:
-        shutil.copyfile(apk, out)
-        if not os.path.exists(out):
-            raise Exception(f"Failed to copy file to {out}")
-        apk = out
-
-    command = [
-        "java",
-        "-jar",
-        cli,
-        "patch",
-        "-b",
-        patches,
-        "-m",
-        integrations,
-        # use j-hc's keystore so we wouldn't need to reinstall
-        "--keystore",
-        "ks.keystore",
-        "--keystore-entry-password",
-        "123456789",
-        "--keystore-password",
-        "123456789",
-        "--signer",
-        "jhc",
-        "--keystore-entry-alias",
-        "jhc",
-    ]
-
-    if includes is not None:
-        for i in includes:
-            command.append("-i")
-            command.append(i)
-
-    if excludes is not None:
-        for e in excludes:
-            command.append("-e")
-            command.append(e)
-
-    command.append(apk)
-
-    subprocess.run(command).check_returncode()
-
-    # remove -patched from the apk to match out
-    if out is not None:
-        cli_output = f"{str(out).removesuffix(".apk")}-patched.apk"
-        os.unlink(out)
-        shutil.move(cli_output, out)
 
 
 def get_latest_release(versions: list[Version]) -> Version | None:
