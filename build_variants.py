@@ -52,7 +52,8 @@ def build_apks(latest_version: Version):
         patches,
         apk,
         includes=[
-            "Bring back twitter" "Enable app downgrading",
+            "Bring back twitter",
+            "Enable app downgrading",
             "Hide FAB",
             "Disable chirp font",
             "Add ability to copy media link",
@@ -70,7 +71,8 @@ def build_apks(latest_version: Version):
         patches,
         apk,
         includes=[
-            "Bring back twitter" "Enable app downgrading",
+            "Bring back twitter",
+            "Enable app downgrading",
             "Hide FAB",
             "Disable chirp font",
             "Add ability to copy media link",
