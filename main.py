@@ -59,7 +59,11 @@ if __name__ == "__main__":
 
     # merge apkm
     # merge command java -jar ./bins/APKEditor-1.3.8.jar
-    merge_apk("big_file.apkm")
+
+    if not os.path.exists("big_file_merged.apk"):
+        merge_apk("big_file.apkm")
+    else:
+        print("apkm is already merged")
 
     download_revanced_bins()
 

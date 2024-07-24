@@ -3,6 +3,8 @@ from typing import cast
 from bs4 import BeautifulSoup, Tag
 import requests
 
+from utils import download
+
 headers = {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     "accept-language": "en-GB,en;q=0.9",
@@ -130,13 +132,7 @@ def download_apk(variant: Variant):
     )
     print(f"Direct link: {direct_link}")
 
-    # https://www.slingacademy.com/article/python-requests-module-how-to-download-files-from-urls/#Streaming_Large_Files
-    with requests.get(direct_link, stream=True, headers=headers) as r:
-        r.raise_for_status()
-        with open("big_file.apkm", "wb") as f:
-            for chunk in r.iter_content(chunk_size=8192):
-                f.write(chunk)
-
+    download(direct_link, "big_file.apkm", headers=headers)
 
 def get_variants(version: Version) -> list[Variant]:
     url = version.link

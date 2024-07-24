@@ -10,13 +10,13 @@ def panic(message: str):
     exit(1)
 
 
-def download(link, out):
+def download(link, out, headers=None):
     if os.path.exists(out):
         print(f"{out} already exists skipping download")
         return
 
     # https://www.slingacademy.com/article/python-requests-module-how-to-download-files-from-urls/#Streaming_Large_Files
-    with requests.get(link, stream=True) as r:
+    with requests.get(link, stream=True, headers=headers) as r:
         r.raise_for_status()
         with open(out, "wb") as f:
             for chunk in r.iter_content(chunk_size=8192):
