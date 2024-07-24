@@ -72,9 +72,9 @@ if __name__ == "__main__":
     publish_release(
         latest_version.version,
         [
-            "x-piko-v{latest_version.version}.apk"
-            "x-piko-material-you-v{latest_version.version}.apk"
-            "twitter-piko-v{latest_version.version}.apk"
-            "twitter-piko-material-yout-v{latest_version.version}.apk"
+            f"x-piko-v{latest_version.version}.apk",
+            f"x-piko-material-you-v{latest_version.version}.apk",
+            f"twitter-piko-v{latest_version.version}.apk",
+            f"twitter-piko-material-yout-v{latest_version.version}.apk"
         ],
     )
