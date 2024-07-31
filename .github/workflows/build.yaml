@@ -33,4 +33,5 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         mkdir -p bins
+        gh auth login --with-token < ${{ env.GH_TOKEN }}
         python main.py
