@@ -31,4 +31,6 @@ jobs:
     - name: Try building
       env: 
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: python main.py
+      run: |
+        mkdir -p bins
+        python main.py
