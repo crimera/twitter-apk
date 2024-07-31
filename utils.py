@@ -97,4 +97,4 @@ def publish_release(tag: str, files: list[str]):
     for file in files:
         command.append(file)
 
-    subprocess.run(command).check_returncode()
+    subprocess.run(command, env=os.environ.copy()).check_returncode()
