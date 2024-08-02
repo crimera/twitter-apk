@@ -18,6 +18,10 @@ def build_apks(latest_version: Version):
         "Hide promote button",
         "Hide Community Notes",
         "Delete from database",
+        "Customize Navigation Bar items",
+        "Remove premium upsell",
+        "Control video auto scroll",
+        "Force enable translate",
     ]
 
     patch_apk(

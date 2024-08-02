@@ -70,6 +70,7 @@ def run_command(command: list[str]):
     try:
         cmd.check_returncode()
     except subprocess.CalledProcessError:
+        print(cmd.stdout)
         print(cmd.stderr)
         exit(1)
 
