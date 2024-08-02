@@ -1,4 +1,3 @@
-from math import exp
 import os
 import shutil
 import requests
@@ -79,7 +78,7 @@ def patch_apk(
     # remove -patched from the apk to match out
     if out is not None:
         cli_output = f"{str(apk).removesuffix(".apk")}-patched.apk"
-        if (os.path.exists(out)):
+        if os.path.exists(out):
             os.unlink(out)
         shutil.move(cli_output, out)
 
