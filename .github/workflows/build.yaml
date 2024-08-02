@@ -31,6 +31,9 @@ jobs:
     - name: Try building
       env: 
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        TG_TOKEN: ${{ secrets.TG_TOKEN }}
+        TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        TG_THREAD_ID: ${{ secrets.TG_THREAD_ID }}
       run: |
         mkdir -p bins
         python main.py
