@@ -9,21 +9,23 @@ def build_apks(latest_version: Version):
     patches = "bins/patches.jar"
     cli = "bins/cli.jar"
 
+    common_includes = [
+        "Enable app downgrading",
+        "Hide FAB",
+        "Disable chirp font",
+        "Add ability to copy media link",
+        "Hide Banner",
+        "Hide promote button",
+        "Hide Community Notes",
+        "Delete from database",
+    ]
+
     patch_apk(
         cli,
         integrations,
         patches,
         apk,
-        includes=[
-            "Enable app downgrading",
-            "Hide FAB",
-            "Disable chirp font",
-            "Add ability to copy media link",
-            "Hide Banner",
-            "Hide promote button",
-            "Hide Community Notes",
-            "Delete from database",
-        ],
+        includes=common_includes,
         out=f"x-piko-material-you-v{latest_version.version}.apk",
     )
 
@@ -32,16 +34,7 @@ def build_apks(latest_version: Version):
         integrations,
         patches,
         apk,
-        includes=[
-            "Enable app downgrading",
-            "Hide FAB",
-            "Disable chirp font",
-            "Add ability to copy media link",
-            "Hide Banner",
-            "Hide promote button",
-            "Hide Community Notes",
-            "Delete from database",
-        ],
+        includes=common_includes,
         excludes=["Dynamic color"],
         out=f"x-piko-v{latest_version.version}.apk",
     )
@@ -51,17 +44,7 @@ def build_apks(latest_version: Version):
         integrations,
         patches,
         apk,
-        includes=[
-            "Bring back twitter",
-            "Enable app downgrading",
-            "Hide FAB",
-            "Disable chirp font",
-            "Add ability to copy media link",
-            "Hide Banner",
-            "Hide promote button",
-            "Hide Community Notes",
-            "Delete from database",
-        ],
+        includes=["Bring back twitter"] + common_includes,
         out=f"twitter-piko-material-you-v{latest_version.version}.apk",
     )
 
@@ -70,17 +53,7 @@ def build_apks(latest_version: Version):
         integrations,
         patches,
         apk,
-        includes=[
-            "Bring back twitter",
-            "Enable app downgrading",
-            "Hide FAB",
-            "Disable chirp font",
-            "Add ability to copy media link",
-            "Hide Banner",
-            "Hide promote button",
-            "Hide Community Notes",
-            "Delete from database",
-        ],
+        includes=["Bring back twitter"] + common_includes,
         excludes=["Dynamic color"],
         out=f"twitter-piko-v{latest_version.version}.apk",
     )
