@@ -1,26 +1,10 @@
 from dataclasses import dataclass
 from typing import cast
 from bs4 import BeautifulSoup, Tag
+from constants import HEADERS
 import requests
 
 from utils import download
-
-headers = {
-    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-    "accept-language": "en-GB,en;q=0.9",
-    "cache-control": "no-cache",
-    "pragma": "no-cache",
-    "priority": "u=0, i",
-    "sec-ch-ua": '"Not/A)Brand";v="8", "Chromium";v="126"',
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": '"Windows"',
-    "sec-fetch-dest": "document",
-    "sec-fetch-mode": "navigate",
-    "sec-fetch-site": "none",
-    "sec-fetch-user": "?1",
-    "upgrade-insecure-requests": "1",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-}
 
 
 @dataclass
@@ -44,7 +28,9 @@ class App:
 
 class FailedToFindElement(Exception):
     def __init__(self, message=None) -> None:
-        self.message = f"Failed to find element{" "+message if message is not None else ""}"  # noqa: E501
+        self.message = (
+            f"Failed to find element{" "+message if message is not None else ""}"  # noqa: E501
+        )
         super().__init__(self.message)
 
 
@@ -58,7 +44,7 @@ def get_versions(url: str) -> list[Version]:
     """
     Get the latest version of the app from the given apkmirror url
     """
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=HEADERS)
     if response.status_code != 200:
         raise FailedToFetch(url)
 
@@ -67,9 +53,7 @@ def get_versions(url: str) -> list[Version]:
 
     out: list[Version] = []
     if versions is not None:
-        for versionRow in cast(Tag, versions).findChildren(
-            "div", recursive=False
-        )[1:]:
+        for versionRow in cast(Tag, versions).findChildren("div", recursive=False)[1:]:
             if versionRow is None:
                 print(f"{versionRow} is None")
                 continue
@@ -85,23 +69,12 @@ def get_versions(url: str) -> list[Version]:
     return out
 
 
-def get_last_build_version(repo_url: str) -> str | None:
-    url = f"https://api.github.com/repos/{repo_url}/releases/latest"
-    response = requests.get(url, headers=headers)
-
-    print(response.status_code)
-    if response.status_code == 200:
-        return response.json()["tag_name"]
-    elif response.status_code == 404:
-        return ""
-
-
 def download_apk(variant: Variant):
     """Download apk from the variant link"""
 
     url = variant.link
 
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=HEADERS)
 
     if response.status_code != 200:
         raise FailedToFetch(url)
@@ -117,7 +90,7 @@ def download_apk(variant: Variant):
     )
 
     # get direct link
-    download_page = requests.get(download_page_link, headers=headers)
+    download_page = requests.get(download_page_link, headers=HEADERS)
     if response.status_code != 200:
         raise FailedToFetch(download_page_link)
 
@@ -127,16 +100,15 @@ def download_apk(variant: Variant):
     if direct_link is None:
         raise FailedToFindElement("download link")
 
-    direct_link = (
-        f"https://www.apkmirror.com/{cast(Tag, direct_link).attrs["href"]}"
-    )
+    direct_link = f"https://www.apkmirror.com/{cast(Tag, direct_link).attrs["href"]}"
     print(f"Direct link: {direct_link}")
 
-    download(direct_link, "big_file.apkm", headers=headers)
+    download(direct_link, "big_file.apkm", headers=HEADERS)
+
 
 def get_variants(version: Version) -> list[Variant]:
     url = version.link
-    variants_page = requests.get(url, headers=headers)
+    variants_page = requests.get(url, headers=HEADERS)
     if variants_page is None:
         raise FailedToFetch(url)
 

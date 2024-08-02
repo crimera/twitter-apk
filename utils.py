@@ -2,11 +2,53 @@ import os
 import shutil
 import requests
 import subprocess
+import sys
+from github import get_last_build_version
 
 
 def panic(message: str):
-    print(message)
+    print(message, file=sys.stderr)
     exit(1)
+
+
+def send_message(message: str, token: str, chat_id: str, thread_id: str):
+    endpoint = f"https://api.telegram.org/bot{token}/sendMessage"
+
+    data = {
+        "parse_mode": "Markdown",
+        "disable_web_page_preview": "true",
+        "text": message,
+        "message_thread_id": thread_id,
+        "chat_id": chat_id,
+    }
+
+    requests.post(endpoint, data=data)
+
+
+def report_to_telegram():
+    tg_token = os.environ["TG_TOKEN"]
+    tg_chat_id = os.environ["TG_CHAT_ID"]
+    tg_thread_id = os.environ["TG_THREAD_ID"]
+    release = get_last_build_version("crimera/twitter-apk")
+
+    if release is None:
+        raise Exception("Could not fetch release")
+
+    downloads = [
+        f"[{asset.name}]({asset.browser_download_url})" for asset in release.assets
+    ]
+
+    message = f"""
+[New Update Released !]({release.html_url})
+
+▼ Downloads ▼
+
+{"\n\n".join(downloads)}
+"""
+
+    print(message)
+
+    send_message(message, tg_token, tg_chat_id, tg_thread_id)
 
 
 def download(link, out, headers=None):
@@ -22,14 +64,20 @@ def download(link, out, headers=None):
                 f.write(chunk)
 
 
-# TODO: make builds silent. only print build logs on error
+def run_command(command: list[str]):
+    cmd = subprocess.run(command, capture_output=True, shell=True)
+
+    try:
+        cmd.check_returncode()
+    except subprocess.CalledProcessError:
+        print(cmd.stderr)
+        exit(1)
+
+
 def merge_apk(path: str):
-    subprocess.run(
-        ["java", "-jar", "./bins/apkeditor.jar", "m", "-i", path]
-    ).check_returncode()
+    run_command(["java", "-jar", "./bins/apkeditor.jar", "m", "-i", path])
 
 
-# TODO: make builds silent. only print build logs on error
 def patch_apk(
     cli: str,
     integrations: str,
@@ -73,7 +121,7 @@ def patch_apk(
 
     command.append(apk)
 
-    subprocess.run(command).check_returncode()
+    run_command(command)
 
     # remove -patched from the apk to match out
     if out is not None:

@@ -1,7 +1,8 @@
 from apkmirror import Version, Variant
 from build_variants import build_apks
 from download_bins import download_apkeditor, download_revanced_bins
-from utils import panic, merge_apk, publish_release
+import github
+from utils import panic, merge_apk, publish_release, report_to_telegram
 import apkmirror
 import os
 
@@ -29,12 +30,15 @@ def main():
     if latest_version.version.find("release") < 0:
         panic("Latest version is not a release version")
 
-    last_build_version = apkmirror.get_last_build_version(repo_url)
+    last_build_version: github.GithubRelease | None = github.get_last_build_version(
+        repo_url
+    )
     if last_build_version is None:
         panic("Failed to fetch the latest build version")
+        return
 
     # Begin stuff
-    if last_build_version != latest_version.version:
+    if last_build_version.tag_name != latest_version.version:
         print(f"New version found: {latest_version.version}")
     else:
         print("No new version found")
@@ -76,6 +80,8 @@ def main():
             f"twitter-piko-material-you-v{latest_version.version}.apk",
         ],
     )
+
+    report_to_telegram()
 
 
 if __name__ == "__main__":
