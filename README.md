@@ -1,4 +1,4 @@
-Apk builds of [crimera/piko](https://github.com/crimera/piko) patches
+Apk builds of [piko](https://github.com/crimera/piko) patches
 
 # Credits
 - [revanced](https://github.com/ReVanced)
