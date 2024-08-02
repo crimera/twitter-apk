@@ -12,7 +12,7 @@ def get_latest_release(versions: list[Version]) -> Version | None:
             return i
 
 
-if __name__ == "__main__":
+def main():
     # get latest version
     url: str = "https://www.apkmirror.com/apk/x-corp/twitter/"
     repo_url: str = "crimera/twitter-apk"
@@ -37,7 +37,8 @@ if __name__ == "__main__":
     if last_build_version != latest_version.version:
         print(f"New version found: {latest_version.version}")
     else:
-        panic("No new version found")
+        print("No new version found")
+        return
 
     # get bundle and universal variant
     variants: list[Variant] = apkmirror.get_variants(latest_version)
@@ -57,9 +58,6 @@ if __name__ == "__main__":
 
     download_apkeditor()
 
-    # merge apkm
-    # merge command java -jar ./bins/APKEditor-1.3.8.jar
-
     if not os.path.exists("big_file_merged.apk"):
         merge_apk("big_file.apkm")
     else:
@@ -75,6 +73,10 @@ if __name__ == "__main__":
             f"x-piko-v{latest_version.version}.apk",
             f"x-piko-material-you-v{latest_version.version}.apk",
             f"twitter-piko-v{latest_version.version}.apk",
-            f"twitter-piko-material-you-v{latest_version.version}.apk"
+            f"twitter-piko-material-you-v{latest_version.version}.apk",
         ],
     )
+
+
+if __name__ == "__main__":
+    main()
