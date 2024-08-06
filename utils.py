@@ -76,7 +76,12 @@ def run_command(command: list[str]):
 
 
 def merge_apk(path: str):
-    run_command(["java", "-jar", "./bins/apkeditor.jar", "m", "-i", path])
+    subprocess.run(
+        ["java", "-jar", "./bins/apkeditor.jar", "m", "-i", path],
+        capture_output=True,
+        shell=True,
+        check=True,
+    )
 
 
 def patch_apk(
