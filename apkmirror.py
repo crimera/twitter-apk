@@ -46,7 +46,7 @@ def get_versions(url: str) -> list[Version]:
     """
     response = requests.get(url, headers=HEADERS)
     if response.status_code != 200:
-        raise FailedToFetch(url)
+        raise FailedToFetch(f"{url}: {response.status_code}")
 
     bs4 = BeautifulSoup(response.text, "html.parser")
     versions = bs4.find("div", attrs={"class": "listWidget"})

@@ -3,6 +3,7 @@ from build_variants import build_apks
 from download_bins import download_apkeditor, download_revanced_bins
 import github
 from utils import panic, merge_apk, publish_release, report_to_telegram
+from download_bins import download_release_asset
 import apkmirror
 import os
 
@@ -24,8 +25,6 @@ def main():
     if latest_version is None:
         raise Exception("Could not find the latest version")
 
-    latest_version = latest_version
-
     # only continue if it's a release
     if latest_version.version.find("release") < 0:
         panic("Latest version is not a release version")
@@ -33,6 +32,7 @@ def main():
     last_build_version: github.GithubRelease | None = github.get_last_build_version(
         repo_url
     )
+
     if last_build_version is None:
         panic("Failed to fetch the latest build version")
         return
@@ -69,6 +69,27 @@ def main():
 
     download_revanced_bins()
 
+    print("Downloading patches")
+    pikoRelease = download_release_asset(
+        "crimera/piko", "^piko.*jar$", "bins", "patches.jar"
+    )
+
+    print("Downloading integrations")
+    integrationsRelease = download_release_asset(
+        "crimera/revanced-integrations",
+        "^rev.*apk$",
+        "bins",
+        "integrations.apk",
+    )
+
+    print(integrationsRelease["body"])
+
+    message: str = f"""
+Changelogs:
+[piko-{pikoRelease["tag_name"]}]({pikoRelease["html_url"]})
+[integrations-{integrationsRelease["tag_name"]}]({integrationsRelease["html_url"]})
+"""
+
     build_apks(latest_version)
 
     publish_release(
@@ -79,6 +100,7 @@ def main():
             f"twitter-piko-v{latest_version.version}.apk",
             f"twitter-piko-material-you-v{latest_version.version}.apk",
         ],
+        message,
     )
 
     report_to_telegram()
