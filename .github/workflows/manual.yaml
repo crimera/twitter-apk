@@ -38,4 +38,4 @@ jobs:
         TG_THREAD_ID: ${{ secrets.TG_THREAD_ID }}
       run: |
         mkdir -p bins
-        python main.py --m 1 --v ${{ github.event.inputs.vername_input }}
+        python main.py --m 1 --v ${{ github.event.inputs.version_input }}
