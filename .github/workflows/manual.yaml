@@ -1,0 +1,41 @@
+name: Release - manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_input:
+        description: 'Enter the version'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu' # See 'Supported distributions' for available options
+        java-version: '11'
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.12.4"
+    - name: Install python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Try building
+      env: 
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        TG_TOKEN: ${{ secrets.TG_TOKEN }}
+        TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        TG_THREAD_ID: ${{ secrets.TG_THREAD_ID }}
+      run: |
+        mkdir -p bins
+        python main.py --m 1 --v ${{ github.event.inputs.version_input }}
