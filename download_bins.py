@@ -3,7 +3,7 @@ import re
 from utils import download
 
 
-def download_release_asset(repo: str, regex: str, out_dir: str, filename=None, include_prereleases: bool = True):
+def download_release_asset(repo: str, regex: str, out_dir: str, filename=None, include_prereleases: bool = False):
     url = f"https://api.github.com/repos/{repo}/releases"
 
     response = requests.get(url)
