@@ -73,6 +73,7 @@ Changelogs:
             f"twitter-piko-material-you-v{latest_version.version}.apk",
         ],
         message,
+        latest_version.version
     )
 
     report_to_telegram()
