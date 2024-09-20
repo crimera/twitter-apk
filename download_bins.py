@@ -10,13 +10,12 @@ def download_release_asset(repo: str, regex: str, out_dir: str, filename=None, i
     if response.status_code != 200:
         raise Exception("Failed to fetch github")
 
-    # Use a list comprehension to filter based on pre-releases and regex
-    releases = [r for r in response.json() if (include_prereleases or r["tag_name"].find("release") >= 0)]
+    releases = [r for r in response.json() if include_prereleases or not r["prerelease"]]
 
     if not releases:
         raise Exception(f"No releases found for {repo}")  # Handle no releases case
 
-    latest_release = sorted(releases, key=lambda r: r["created_at"], reverse=True)[0]
+    latest_release = releases[0]
 
     assets = latest_release["assets"]
 
