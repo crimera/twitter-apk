@@ -13,7 +13,7 @@ def download_release_asset(repo: str, regex: str, out_dir: str, filename=None, i
     releases = [r for r in response.json() if include_prereleases or not r["prerelease"]]
 
     if not releases:
-        raise Exception(f"No releases found for {repo}")  # Handle no releases case
+        raise Exception(f"No releases found for {repo}")
 
     latest_release = releases[0]
 
