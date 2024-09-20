@@ -3,16 +3,21 @@ import re
 from utils import download
 
 
-def download_release_asset(repo: str, regex: str, out_dir: str, filename=None):
-    url = f"https://api.github.com/repos/{repo}/releases/latest"
+def download_release_asset(repo: str, regex: str, out_dir: str, filename=None, include_prereleases: bool = False):
+    url = f"https://api.github.com/repos/{repo}/releases"
 
     response = requests.get(url)
     if response.status_code != 200:
         raise Exception("Failed to fetch github")
 
-    release = response.json()
+    releases = [r for r in response.json() if include_prereleases or not r["prerelease"]]
 
-    assets = response.json()["assets"]
+    if not releases:
+        raise Exception(f"No releases found for {repo}")
+
+    latest_release = releases[0]
+
+    assets = latest_release["assets"]
 
     link = None
     for i in assets:
@@ -22,9 +27,9 @@ def download_release_asset(repo: str, regex: str, out_dir: str, filename=None):
                 filename = i["name"]
             break
 
-    download(link, f"{out_dir.lstrip("/")}/{filename}")
+    download(link, f"{out_dir.lstrip('/')}/{filename}")
 
-    return release
+    return latest_release
 
 
 def download_apkeditor():
